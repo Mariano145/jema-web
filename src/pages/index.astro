@@ -1,18 +1,37 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Navigation from '../components/ui/Navigation.astro';
 import Hero from '../sections/hero/Hero.astro';
 import Servicios from '../sections/servicios/Servicios.astro';
+import ComoTrabajamos from '../sections/como-trabajamos/ComoTrabajamos.astro';
+import SobreJema from '../sections/sobre-jema/SobreJema.astro';
+import Casos from '../sections/casos/Casos.astro';
+import FAQ from '../sections/faq/FAQ.astro';
+import Contacto from '../sections/contacto/Contacto.astro';
+import Footer from '../sections/footer/Footer.astro';
+import WhatsAppFloat from '../components/ui/WhatsAppFloat.astro';
+
+const navLinks = [
+  { label: 'Servicios', href: '#servicios' },
+  { label: 'Cómo trabajamos', href: '#como-trabajamos' },
+  { label: 'Sobre JEMA', href: '#sobre-jema' },
+  { label: 'FAQ', href: '#faq' },
+  { label: 'Contacto', href: '#contacto' },
+];
 ---
 
 <Layout>
+  <Navigation links={navLinks} />
   <main>
     <Hero />
+    <div data-hero-sentinel class="h-0"></div>
     <Servicios />
-    {/* TODO: <ComoTrabajamos /> */}
-    {/* TODO: <SobreJema /> */}
-    {/* TODO: <Casos /> */}
-    {/* TODO: <FAQ /> */}
-    {/* TODO: <Contacto /> */}
-    {/* TODO: <Footer /> */}
+    <ComoTrabajamos />
+    <SobreJema />
+    <Casos />
+    <FAQ />
+    <Contacto />
   </main>
+  <Footer />
+  <WhatsAppFloat />
 </Layout>

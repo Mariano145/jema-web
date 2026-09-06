@@ -3,9 +3,10 @@ interface Props {
   variant?: 'primary' | 'secondary' | 'ghost';
   href: string;
   class?: string;
+  type?: string;
 }
 
-const { variant = 'primary', href, class: className = '' } = Astro.props;
+const { variant = 'primary', href, class: className = '', type } = Astro.props;
 
 const base =
   'inline-flex items-center justify-center gap-2 rounded-lg px-6 py-3 font-medium transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background';
@@ -20,6 +21,6 @@ const variants: Record<NonNullable<Props['variant']>, string> = {
 const classes = `${base} ${variants[variant]} ${className}`;
 ---
 
-<a href={href} class={classes}>
+<a href={href} class={classes} type={type}>
   <slot />
 </a>

@@ -7,8 +7,14 @@ export const ctas = {
     presenciaDigital: 'Hola, me interesa Presencia Digital',
     automatizacion: 'Hola, me interesa Automatización',
     softwareMedida: 'Hola, me interesa Software a Medida',
+    contacto: 'Hola, quiero arrancar un proyecto con JEMA',
   },
   formEndpoint: '#contact',                        // TODO: future endpoint
+  emailContact: 'hola@jema.com.ar',                // TODO: real email
+  legalLinks: {
+    privacidad: '#privacidad',                     // TODO: real legal pages
+    terminos: '#terminos',                         // TODO: real legal pages
+  },
 } as const;
 
 export function buildWhatsAppLink(message?: string): string {

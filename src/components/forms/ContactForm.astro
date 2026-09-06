@@ -1,0 +1,132 @@
+---
+import Button from '../ui/Button.astro';
+import { ctas } from '../../config/ctas';
+---
+
+<form id="contact-form" novalidate class="flex flex-col gap-4">
+  <div>
+    <label for="nombre" class="mb-1 block text-sm font-medium text-text">Nombre</label>
+    <input
+      type="text"
+      id="nombre"
+      name="nombre"
+      required
+      class="w-full rounded-lg border border-text/20 bg-white px-4 py-3 text-text placeholder-text/40 transition-colors focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+      aria-describedby="nombre-error"
+    />
+    <p id="nombre-error" class="mt-1 hidden text-sm text-red-600" role="alert"></p>
+  </div>
+
+  <div>
+    <label for="email" class="mb-1 block text-sm font-medium text-text">Email</label>
+    <input
+      type="email"
+      id="email"
+      name="email"
+      required
+      class="w-full rounded-lg border border-text/20 bg-white px-4 py-3 text-text placeholder-text/40 transition-colors focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+      aria-describedby="email-error"
+    />
+    <p id="email-error" class="mt-1 hidden text-sm text-red-600" role="alert"></p>
+  </div>
+
+  <div>
+    <label for="mensaje" class="mb-1 block text-sm font-medium text-text">Mensaje</label>
+    <textarea
+      id="mensaje"
+      name="mensaje"
+      rows="4"
+      required
+      class="w-full rounded-lg border border-text/20 bg-white px-4 py-3 text-text placeholder-text/40 transition-colors focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+      aria-describedby="mensaje-error"
+    ></textarea>
+    <p id="mensaje-error" class="mt-1 hidden text-sm text-red-600" role="alert"></p>
+  </div>
+
+  <div id="form-error" class="hidden text-sm text-red-600" role="alert"></div>
+
+  <Button variant="primary" href="#" type="submit">Enviar mensaje</Button>
+</form>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  function showError(fieldId: string, message: string) {
+    const errorEl = document.getElementById(`${fieldId}-error`);
+    if (errorEl) {
+      errorEl.textContent = message;
+      errorEl.classList.remove('hidden');
+    }
+  }
+
+  function clearError(fieldId: string) {
+    const errorEl = document.getElementById(`${fieldId}-error`);
+    if (errorEl) {
+      errorEl.textContent = '';
+      errorEl.classList.add('hidden');
+    }
+  }
+
+  function clearAllErrors() {
+    ['nombre', 'email', 'mensaje'].forEach(clearError);
+    const formError = document.getElementById('form-error');
+    if (formError) {
+      formError.textContent = '';
+      formError.classList.add('hidden');
+    }
+  }
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    clearAllErrors();
+
+    const nombre = (form.querySelector('#nombre') as HTMLInputElement).value.trim();
+    const email = (form.querySelector('#email') as HTMLInputElement).value.trim();
+    const mensaje = (form.querySelector('#mensaje') as HTMLTextAreaElement).value.trim();
+    let valid = true;
+
+    if (!nombre) {
+      showError('nombre', 'El nombre es obligatorio.');
+      valid = false;
+    }
+    if (!email) {
+      showError('email', 'El email es obligatorio.');
+      valid = false;
+    } else if (!emailRegex.test(email)) {
+      showError('email', 'Ingresá un email válido.');
+      valid = false;
+    }
+    if (!mensaje) {
+      showError('mensaje', 'El mensaje es obligatorio.');
+      valid = false;
+    }
+
+    if (!valid) return;
+
+    try {
+      const response = await fetch('${ctas.formEndpoint}', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nombre, email, mensaje }),
+      });
+
+      if (response.ok) {
+        form.outerHTML =
+          '<p class="text-lg text-text">Mensaje enviado. Te respondemos en menos de 24 horas.</p>';
+      } else {
+        const formError = document.getElementById('form-error');
+        if (formError) {
+          formError.textContent = 'Hubo un error al enviar el mensaje. Intentá de nuevo.';
+          formError.classList.remove('hidden');
+        }
+      }
+    } catch {
+      const formError = document.getElementById('form-error');
+      if (formError) {
+        formError.textContent = 'Hubo un error al enviar el mensaje. Intentá de nuevo.';
+        formError.classList.remove('hidden');
+      }
+    }
+  });
+</script>
