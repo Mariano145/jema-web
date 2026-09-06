@@ -1,0 +1,23 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+---
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 200 200"
+  role="img"
+  aria-labelledby="brandmark-title"
+  class={`text-secondary ${className}`}
+>
+  <title id="brandmark-title">JEMA</title>
+  <!-- Geometric sans-serif J: top bar + right vertical stroke + squared foot -->
+  <rect x="45" y="15" width="110" height="22" fill="currentColor" />
+  <rect x="133" y="37" width="22" height="85" fill="currentColor" />
+  <rect x="45" y="122" width="110" height="22" fill="currentColor" />
+  <!-- Orb integrated with the foot of the J -->
+  <circle cx="56" cy="166" r="22" class="fill-accent" />
+</svg>

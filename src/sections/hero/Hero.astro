@@ -1,0 +1,40 @@
+---
+import Button from '../../components/ui/Button.astro';
+import BrandMark from './BrandMark.astro';
+import { buildWhatsAppLink, ctas } from '../../config/ctas';
+---
+
+<section class="bg-background py-16 md:py-20 lg:py-24">
+  <div class="mx-auto flex max-w-7xl flex-col items-center gap-12 px-6 md:px-8 md:flex-row lg:gap-16">
+    <div class="flex flex-1 flex-col">
+      <p class="text-sm font-medium uppercase tracking-widest text-secondary">
+        Automatización · Presencia Digital · Software a Medida
+      </p>
+
+      <h1 class="mt-6 text-4xl font-bold tracking-tight leading-tight text-text md:text-5xl lg:text-6xl">
+        Sistemas que hacen el trabajo repetitivo por vos
+      </h1>
+
+      <p class="mt-6 max-w-xl text-lg leading-relaxed text-text/75 md:text-xl">
+        Construimos landings, automatizaciones y software a medida para empresas que quieren escalar sin sumar equipo.
+      </p>
+
+      <div class="mt-10 flex flex-col gap-3 sm:flex-row">
+        <Button variant="primary" href={ctas.calendlyUrl}>
+          Agendar diagnóstico gratuito →
+        </Button>
+        <Button variant="secondary" href={buildWhatsAppLink()}>
+          Hablar por WhatsApp
+        </Button>
+      </div>
+
+      <p class="mt-6 text-sm text-text/50">
+        Argentina · ES / EN
+      </p>
+    </div>
+
+    <div class="flex flex-1 justify-center items-center">
+      <BrandMark class="h-auto w-[18rem] md:w-[24rem] lg:w-[28rem]" />
+    </div>
+  </div>
+</section>
