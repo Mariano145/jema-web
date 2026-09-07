@@ -3,7 +3,21 @@ import Card from '../../components/ui/Card.astro';
 import { ctas, buildWhatsAppLink } from '../../config/ctas';
 ---
 
-<section id="servicios" class="py-16 md:py-20 lg:py-24">
+<section id="servicios" class="relative pt-24 md:pt-28 lg:pt-32 pb-16 md:pb-20 lg:pb-24">
+  <!-- Decorative curve spilling down from the Hero (same color as Hero so it looks like the Hero extends) -->
+  <svg
+    class="pointer-events-none absolute top-0 left-0 right-0 w-full"
+    style="transform: translateY(-100%);"
+    viewBox="0 0 1440 100"
+    preserveAspectRatio="none"
+    fill="var(--color-background)"
+    xmlns="http://www.w3.org/2000/svg"
+    aria-hidden="true"
+  >
+    <path d="M 0 100 Q 720 0 1440 100 L 1440 100 L 0 100 Z" />
+  </svg>
+
+  <div class="relative mx-auto max-w-7xl px-6 md:px-8">
   <div class="mx-auto max-w-7xl px-6 md:px-8">
     <div class="mb-12 max-w-2xl md:mb-16">
       <p class="text-sm font-medium uppercase tracking-widest text-secondary">Lo que hacemos</p>
