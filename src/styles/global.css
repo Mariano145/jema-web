@@ -40,6 +40,17 @@ body {
   background-color: var(--color-background);
 }
 
+.layout-main {
+  background: linear-gradient(
+    to bottom,
+    var(--color-background) 0%,
+    var(--color-white) 30%,
+    var(--color-white) 70%,
+    var(--color-background) 95%,
+    var(--color-text) 100%
+  );
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

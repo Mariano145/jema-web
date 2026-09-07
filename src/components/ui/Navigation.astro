@@ -13,7 +13,7 @@ const { links } = Astro.props;
 
 <nav
   aria-label="Navegación principal"
-  class="fixed top-0 left-0 right-0 z-40 transition-colors duration-300 bg-transparent backdrop-blur-md border-b border-text/10 text-text"
+  class="fixed top-0 left-0 right-0 z-40 border-b border-text/10 bg-background/80 backdrop-blur-md transition-colors duration-300 text-text"
   data-nav
 >
   <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-x-6 gap-y-2 px-6 py-4 md:flex-nowrap md:gap-8 md:px-8">
@@ -37,68 +37,23 @@ const { links } = Astro.props;
 </nav>
 
 <script>
-  const nav = document.querySelector('[data-nav]');
-  const textEls = document.querySelectorAll('[data-nav-text]');
   const navLinks = document.querySelectorAll('[data-nav-link]');
 
-  if (!nav) {
-    // Bail if nav not found
-  } else {
-    // Detect when the dark section (Footer) is in viewport to invert text color
-    const darkSections = Array.from(document.querySelectorAll('[data-nav-dark]'));
-
-    function applyDarkMode(isDark: boolean) {
-      if (isDark) {
-        nav.classList.remove('text-text', 'border-text/10');
-        nav.classList.add('text-white', 'border-white/10');
-        textEls.forEach((el) => {
-          el.classList.remove('text-text', 'hover:text-primary');
-          el.classList.add('text-white', 'hover:text-accent');
-        });
-      } else {
-        nav.classList.remove('text-white', 'border-white/10');
-        nav.classList.add('text-text', 'border-text/10');
-        textEls.forEach((el) => {
-          el.classList.remove('text-white', 'hover:text-accent');
-          el.classList.add('text-text', 'hover:text-primary');
-        });
-      }
-    }
-
-    const darkObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            applyDarkMode(true);
-          } else if (!darkSections.some((s) => {
-            const rect = (s as HTMLElement).getBoundingClientRect();
-            return rect.top < window.innerHeight && rect.bottom > 0;
-          })) {
-            applyDarkMode(false);
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    darkSections.forEach((s) => darkObserver.observe(s));
-
-    // Active link highlighting
-    const sections = Array.from(document.querySelectorAll('section[id]'));
-    const linkObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const id = entry.target.id;
-            navLinks.forEach((link) => {
-              const href = link.getAttribute('href');
-              link.toggleAttribute('data-active', href === `#${id}`);
-            });
-          }
-        });
-      },
-      { threshold: 0.3 }
-    );
-    sections.forEach((section) => linkObserver.observe(section));
-  }
+  // Active link highlighting via IntersectionObserver
+  const sections = Array.from(document.querySelectorAll('section[id]'));
+  const linkObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          navLinks.forEach((link) => {
+            const href = link.getAttribute('href');
+            link.toggleAttribute('data-active', href === `#${id}`);
+          });
+        }
+      });
+    },
+    { threshold: 0.3 }
+  );
+  sections.forEach((section) => linkObserver.observe(section));
 </script>
