@@ -1,0 +1,59 @@
+---
+import Button from '../../components/ui/Button.astro';
+import { ctas } from '../../config/ctas';
+
+const steps = [
+  {
+    number: '01',
+    title: 'Diagnóstico gratuito',
+    description:
+      'Una llamada de 30 minutos donde entendemos qué necesitás, qué ya tenés y qué te falta. Sin compromiso y sin jerga de ventas.',
+    cta: true,
+  },
+  {
+    number: '02',
+    title: 'Plan a medida',
+    description:
+      'Te llevamos una propuesta con alcance, tiempos y precio. La revisamos juntos y la ajustamos hasta que cierre.',
+    cta: false,
+  },
+  {
+    number: '03',
+    title: 'Implementación y mejora continua',
+    description:
+      'Construimos, desplegamos y nos quedamos operando. Las mejoras continuas vienen incluidas, no son un extra.',
+    cta: false,
+  },
+];
+---
+
+<section id="como-trabajamos" class="py-16 md:py-20 lg:py-24">
+  <div class="mx-auto max-w-7xl px-6 md:px-8">
+    <div class="mb-12 max-w-2xl md:mb-16">
+      <p class="text-sm font-medium uppercase tracking-widest text-secondary">Cómo trabajamos</p>
+      <h2 class="mt-4 text-3xl font-bold tracking-tight text-text md:text-4xl lg:text-5xl">
+        Tres pasos, sin tecnicismos
+      </h2>
+      <p class="mt-6 text-lg leading-relaxed text-text/75">
+        Sin revelar el playbook completo. Lo que necesitás saber para decidir si arrancamos.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 gap-8 md:grid-cols-3 lg:gap-12">
+      {steps.map((step) => (
+        <article>
+          <p class="mb-4 text-6xl font-bold text-primary/20">{step.number}</p>
+          <h3 class="text-2xl font-bold text-text">{step.title}</h3>
+          <p class="mt-3 text-base leading-relaxed text-text/75">{step.description}</p>
+          {step.cta && (
+            <div class="mt-6">
+              <Button variant="primary" href={ctas.calendlyUrl}>
+                Agendar diagnóstico gratuito →
+              </Button>
+            </div>
+          )}
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

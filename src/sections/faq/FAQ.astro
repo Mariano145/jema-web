@@ -1,0 +1,49 @@
+---
+import Accordion from '../../components/ui/Accordion.astro';
+
+const faqItems = [
+  {
+    question: '¿Cuánto cuesta un proyecto?',
+    answer:
+      'Depende del alcance. Después del diagnóstico gratuito te llevamos una propuesta con precio cerrado. Trabajamos con proyectos desde USD 1.500 (landing) hasta USD 50.000+ (SaaS a medida).',
+  },
+  {
+    question: '¿Cuánto tarda?',
+    answer:
+      'Una landing se entrega en 2 a 3 semanas. Una automatización con CRM, 4 a 6 semanas. Un SaaS a medida, depende del alcance, pero nunca menos de 2 meses.',
+  },
+  {
+    question: '¿Qué incluye el servicio?',
+    answer:
+      'Diseño, desarrollo, despliegue y operación. Las mejoras continuas vienen incluidas, no son un extra.',
+  },
+  {
+    question: '¿Qué pasa después del deploy?',
+    answer:
+      'Nos quedamos operando. Si algo falla, lo arreglamos. Si querés escalar o sumar features, lo planeamos juntos.',
+  },
+  {
+    question: '¿Trabajan con empresas fuera de Argentina?',
+    answer:
+      'Sí. Trabajamos con clientes en toda Latinoamérica y España. El idioma y la zona horaria no son problema.',
+  },
+];
+---
+
+<section id="faq" class="py-16 md:py-20 lg:py-24">
+  <div class="mx-auto max-w-3xl px-6 md:px-8">
+    <div class="mb-12 md:mb-16">
+      <p class="text-sm font-medium uppercase tracking-widest text-secondary">
+        Preguntas frecuentes
+      </p>
+      <h2 class="mt-4 text-3xl font-bold tracking-tight text-text md:text-4xl lg:text-5xl">
+        Lo que nos preguntan antes de arrancar
+      </h2>
+      <p class="mt-6 text-lg leading-relaxed text-text/75">
+        Si tu pregunta no está acá, escribinos.
+      </p>
+    </div>
+
+    <Accordion items={faqItems} />
+  </div>
+</section>
