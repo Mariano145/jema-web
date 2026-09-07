@@ -43,8 +43,8 @@ body {
 .layout-main {
   background: linear-gradient(
     to bottom,
-    var(--color-background) 0%,
-    var(--color-white) 30%,
+    color-mix(in srgb, var(--color-background) 70%, var(--color-white)) 0%,
+    var(--color-white) 15%,
     var(--color-white) 70%,
     var(--color-background) 95%,
     var(--color-text) 100%
