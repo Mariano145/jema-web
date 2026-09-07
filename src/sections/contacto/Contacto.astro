@@ -26,25 +26,43 @@ import { ctas, buildWhatsAppLink } from '../../config/ctas';
     <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
       <!-- Column 1: Calendly -->
       <div>
-        <h3 class="mb-4 text-xl font-bold text-text">Agenda una llamada</h3>
-        <iframe
-          src={ctas.calendlyUrl}
-          width="100%"
-          height="600"
-          frameborder="0"
-          class="rounded-lg"
-        ></iframe>
+        <h3 class="mb-4 text-xl font-bold text-text">Agendar llamada</h3>
+        <p class="mb-6 text-base leading-relaxed text-text/75">
+          Bloqueamos 30 minutos para entender tu proyecto y ver si encajamos.
+        </p>
+        <Button variant="primary" href={ctas.calendlyUrl}>
+          Agendar diagnóstico gratuito →
+        </Button>
       </div>
 
-      <!-- Column 2: WhatsApp -->
+      <!-- Column 2: Canales directos -->
       <div>
-        <h3 class="mb-4 text-xl font-bold text-text">Hablar por WhatsApp</h3>
-        <p class="mb-6 text-base leading-relaxed text-text/75">
-          Respuesta en menos de 1 hora en horario laboral.
-        </p>
-        <Button variant="primary" href={buildWhatsAppLink(ctas.whatsappMessages.contacto)}>
-          Hablar por WhatsApp →
-        </Button>
+        <h3 class="mb-4 text-xl font-bold text-text">Canales directos</h3>
+
+        <!-- WhatsApp -->
+        <div class="rounded-lg border border-text/10 bg-white p-5">
+          <p class="text-base font-semibold text-text">WhatsApp</p>
+          <p class="mt-1 text-sm text-text/70">Respuesta inmediata</p>
+          <Button
+            variant="secondary"
+            href={buildWhatsAppLink(ctas.whatsappMessages.contacto)}
+            class="mt-4 w-full"
+          >
+            Hablar por WhatsApp
+          </Button>
+        </div>
+
+        <!-- Email -->
+        <div class="mt-4 rounded-lg border border-text/10 bg-white p-5">
+          <p class="text-base font-semibold text-text">Email</p>
+          <p class="mt-1 text-sm text-text/70">Respuesta &lt; 1h</p>
+          <a
+            href={`mailto:${ctas.emailContact}`}
+            class="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-lg border border-secondary px-6 py-3 font-medium text-secondary transition-colors duration-200 hover:bg-secondary hover:text-white"
+          >
+            {ctas.emailContact}
+          </a>
+        </div>
       </div>
 
       <!-- Column 3: Form -->
