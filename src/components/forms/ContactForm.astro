@@ -1,5 +1,5 @@
 ---
-import Button from '../ui/Button.astro';
+import SubmitButton from '../ui/SubmitButton.astro';
 import { ctas } from '../../config/ctas';
 ---
 
@@ -18,6 +18,18 @@ import { ctas } from '../../config/ctas';
   </div>
 
   <div>
+    <label for="empresa" class="mb-1 block text-sm font-medium text-text">Empresa</label>
+    <input
+      type="text"
+      id="empresa"
+      name="empresa"
+      class="w-full rounded-lg border border-text/20 bg-white px-4 py-3 text-text placeholder-text/40 transition-colors focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+      aria-describedby="empresa-error"
+    />
+    <p id="empresa-error" class="mt-1 hidden text-sm text-red-600" role="alert"></p>
+  </div>
+
+  <div>
     <label for="email" class="mb-1 block text-sm font-medium text-text">Email</label>
     <input
       type="email"
@@ -28,6 +40,21 @@ import { ctas } from '../../config/ctas';
       aria-describedby="email-error"
     />
     <p id="email-error" class="mt-1 hidden text-sm text-red-600" role="alert"></p>
+  </div>
+
+  <div>
+    <label for="tema" class="mb-1 block text-sm font-medium text-text">Tema</label>
+    <select
+      id="tema"
+      name="tema"
+      class="w-full rounded-lg border border-text/20 bg-white px-4 py-3 text-text transition-colors focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+    >
+      <option value="">Elegí un tema (opcional)</option>
+      <option value="presenciaDigital">Presencia Digital</option>
+      <option value="automatizacion">Automatización</option>
+      <option value="softwareMedida">Software a Medida</option>
+      <option value="otro">Otro</option>
+    </select>
   </div>
 
   <div>
@@ -45,11 +72,13 @@ import { ctas } from '../../config/ctas';
 
   <div id="form-error" class="hidden text-sm text-red-600" role="alert"></div>
 
-  <Button variant="primary" href="#" type="submit">Enviar mensaje</Button>
+  <SubmitButton variant="primary">Enviar mensaje</SubmitButton>
 </form>
 
 <script>
   const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const submitBtn = form?.querySelector<HTMLButtonElement>('[data-submit-btn]');
+  const submitDefaultText = submitBtn?.textContent?.trim() ?? 'Enviar mensaje';
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   function showError(fieldId: string, message: string) {
@@ -69,11 +98,18 @@ import { ctas } from '../../config/ctas';
   }
 
   function clearAllErrors() {
-    ['nombre', 'email', 'mensaje'].forEach(clearError);
+    ['nombre', 'empresa', 'email', 'mensaje'].forEach(clearError);
     const formError = document.getElementById('form-error');
     if (formError) {
       formError.textContent = '';
       formError.classList.add('hidden');
+    }
+  }
+
+  function resetSubmit() {
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = submitDefaultText;
     }
   }
 
@@ -82,7 +118,9 @@ import { ctas } from '../../config/ctas';
     clearAllErrors();
 
     const nombre = (form.querySelector('#nombre') as HTMLInputElement).value.trim();
+    const empresa = (form.querySelector('#empresa') as HTMLInputElement).value.trim();
     const email = (form.querySelector('#email') as HTMLInputElement).value.trim();
+    const tema = (form.querySelector('#tema') as HTMLSelectElement).value;
     const mensaje = (form.querySelector('#mensaje') as HTMLTextAreaElement).value.trim();
     let valid = true;
 
@@ -104,29 +142,45 @@ import { ctas } from '../../config/ctas';
 
     if (!valid) return;
 
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Enviando...';
+    }
+
     try {
-      const response = await fetch('${ctas.formEndpoint}', {
+      const response = await fetch(ctas.formEndpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nombre, email, mensaje }),
+        body: JSON.stringify({ nombre, empresa, email, tema, mensaje }),
       });
 
       if (response.ok) {
-        form.outerHTML =
-          '<p class="text-lg text-text">Mensaje enviado. Te respondemos en menos de 24 horas.</p>';
+        form.outerHTML = `
+          <div class="rounded-lg border border-primary/30 bg-primary/5 p-6 text-center">
+            <p class="text-lg font-medium text-text">Listo. Te respondemos en menos de 24h hábiles.</p>
+            <p class="mt-2 text-sm text-text/70">
+              Mientras tanto, podés ver más en
+              <a href="#servicios" class="text-primary underline-offset-2 hover:underline">Servicios</a>
+              o
+              <a href="#como-trabajamos" class="text-primary underline-offset-2 hover:underline">Cómo trabajamos</a>.
+            </p>
+          </div>
+        `;
       } else {
         const formError = document.getElementById('form-error');
         if (formError) {
-          formError.textContent = 'Hubo un error al enviar el mensaje. Intentá de nuevo.';
+          formError.textContent = 'No pudimos enviar el mensaje. Intentá de nuevo o escribinos por WhatsApp.';
           formError.classList.remove('hidden');
         }
+        resetSubmit();
       }
     } catch {
       const formError = document.getElementById('form-error');
       if (formError) {
-        formError.textContent = 'Hubo un error al enviar el mensaje. Intentá de nuevo.';
+        formError.textContent = 'No pudimos enviar el mensaje. Revisá tu conexión o escribinos por WhatsApp.';
         formError.classList.remove('hidden');
       }
+      resetSubmit();
     }
   });
 </script>
