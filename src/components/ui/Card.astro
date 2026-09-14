@@ -1,18 +1,14 @@
 ---
 import Button from './Button.astro';
-import { buildWhatsAppLink } from '../../config/ctas';
 
 interface Props {
   title: string;
   description: string;
   ctaLabel: string;
   ctaHref: string;
-  whatsappMessage?: string;
 }
 
-const { title, description, ctaLabel, ctaHref, whatsappMessage } = Astro.props;
-
-const whatsappHref = whatsappMessage ? buildWhatsAppLink(whatsappMessage) : null;
+const { title, description, ctaLabel, ctaHref } = Astro.props;
 ---
 
 <article
@@ -22,13 +18,5 @@ const whatsappHref = whatsappMessage ? buildWhatsAppLink(whatsappMessage) : null
   <p class="flex-1 text-base leading-relaxed text-text/75">{description}</p>
   <div class="mt-auto flex flex-col gap-3">
     <Button variant="primary" href={ctaHref}>{ctaLabel}</Button>
-    {whatsappHref && (
-      <a
-        href={whatsappHref}
-        class="text-sm font-medium text-secondary transition-colors duration-200 hover:text-primary"
-      >
-        Hablar por WhatsApp →
-      </a>
-    )}
   </div>
 </article>

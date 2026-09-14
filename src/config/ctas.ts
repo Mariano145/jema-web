@@ -1,6 +1,6 @@
 export const ctas = {
   calendlyUrl: '#agendar',                         // TODO: replace with real Calendly URL
-  whatsappNumber: '000000000',                     // TODO: replace (country code + number, no + or spaces)
+  whatsappNumber: '543584398485',
   whatsappDefaultMessage: 'Hola, me interesa conocer más sobre JEMA',
   whatsappMessages: {
     default: 'Hola, me interesa conocer más sobre JEMA',
@@ -10,7 +10,7 @@ export const ctas = {
     contacto: 'Hola, quiero arrancar un proyecto con JEMA',
   },
   formEndpoint: '#contact',                        // TODO: future endpoint
-  emailContact: 'hola@jema.com.ar',                // TODO: real email
+  emailContact: 'jema@gmail.com',
   legalLinks: {
     privacidad: '#privacidad',                     // TODO: real legal pages
     terminos: '#terminos',                         // TODO: real legal pages

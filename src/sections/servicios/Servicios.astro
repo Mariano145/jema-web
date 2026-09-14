@@ -1,6 +1,9 @@
 ---
 import Card from '../../components/ui/Card.astro';
 import { ctas, buildWhatsAppLink } from '../../config/ctas';
+
+// buildWhatsAppLink is still used for the Software a Medida primary CTA.
+// (The per-card secondary "Hablar por WhatsApp" link was removed in `simplify-service-cards`.)
 ---
 
 <section id="servicios" class="relative pt-24 md:pt-28 lg:pt-32 pb-16 md:pb-20 lg:pb-24">
@@ -19,21 +22,18 @@ import { ctas, buildWhatsAppLink } from '../../config/ctas';
         description="Webs corporativas, landing pages de alta conversión y e-commerce. Convertimos visitas en clientes con canales que ya probaron funcionar."
         ctaLabel="Solicitar cotización"
         ctaHref={ctas.calendlyUrl}
-        whatsappMessage={ctas.whatsappMessages.presenciaDigital}
       />
       <Card
         title="Automatización"
         description="Conectamos WhatsApp e Instagram a un CRM único e implementamos agentes IA 24/7 que filtran leads y automatizan tareas repetitivas."
         ctaLabel="Agendar diagnóstico gratuito"
         ctaHref={ctas.calendlyUrl}
-        whatsappMessage={ctas.whatsappMessages.automatizacion}
       />
       <Card
         title="Software a Medida"
         description="Dashboards, portales privados y SaaS. Diseñamos, desarrollamos y desplegamos el software exacto que tu operación necesita."
         ctaLabel="Hablar con un arquitecto"
         ctaHref={buildWhatsAppLink(ctas.whatsappMessages.softwareMedida)}
-        whatsappMessage={ctas.whatsappMessages.softwareMedida}
       />
     </div>
   </div>
