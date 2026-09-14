@@ -1,0 +1,49 @@
+---
+import Accordion from '../../components/ui/Accordion.astro';
+
+const faqItems = [
+  {
+    question: '¿Cuánto te toma a vos?',
+    answer:
+      'Muy poco. La mayor parte la absorbemos nosotros. Dos o tres reuniones al arranque, alguna validación puntual durante el desarrollo, y listo. Después del deploy la operación corre por nuestra cuenta.',
+  },
+  {
+    question: '¿Necesito saber de tecnología?',
+    answer:
+      'No. Trabajamos en tu idioma y te explicamos todo lo que necesitás saber para tomar decisiones, sin jerga. Si querés involucrarte a nivel técnico, podemos, pero no es requisito.',
+  },
+  {
+    question: '¿De quién es el código cuando terminamos?',
+    answer:
+      'Tuyo. El código, los diseños, las cuentas, todo. Te lo entregamos con acceso completo y sin ataduras. Si querés mudar de proveedor mañana, podés.',
+  },
+  {
+    question: '¿Cómo sé que el proyecto avanza bien?',
+    answer:
+      'Ves el avance en tiempo real. Te mostramos demos cortas, te pasamos acceso a un entorno de prueba donde probar lo que vamos construyendo, y tenemos una reunión corta cada una o dos semanas para alinear.',
+  },
+  {
+    question: '¿Puedo agregar cosas nuevas después?',
+    answer:
+      'Sí, y es lo más común. Después del lanzamiento arrancamos una etapa de mejora continua: sumás features, ajustás cosas, escalás lo que funciona. Es un sistema vivo, no un entregable único.',
+  },
+];
+---
+
+<section id="faq" class="py-16 md:py-20 lg:py-24">
+  <div class="mx-auto max-w-3xl px-6 md:px-8">
+    <div class="mb-12 md:mb-16">
+      <p class="text-sm font-medium uppercase tracking-widest text-secondary">
+        Preguntas frecuentes
+      </p>
+      <h2 class="mt-4 text-3xl font-bold tracking-tight text-text md:text-4xl lg:text-5xl">
+        Lo que nos preguntan antes de arrancar
+      </h2>
+      <p class="mt-6 text-lg leading-relaxed text-text/75">
+        Si tu pregunta no está acá, escribinos.
+      </p>
+    </div>
+
+    <Accordion items={faqItems} />
+  </div>
+</section>

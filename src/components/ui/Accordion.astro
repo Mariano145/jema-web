@@ -1,0 +1,86 @@
+---
+interface AccordionItem {
+  question: string;
+  answer: string;
+}
+
+interface Props {
+  items: AccordionItem[];
+  allowMultiple?: boolean;
+}
+
+const { items, allowMultiple = false } = Astro.props;
+---
+
+<div class="divide-y divide-text/10" data-accordion data-allow-multiple={allowMultiple ? '' : undefined}>
+  {items.map((item, i) => (
+    <div class="accordion-item">
+      <button
+        type="button"
+        class="flex w-full items-center justify-between py-5 text-left text-lg font-semibold text-text"
+        aria-expanded="false"
+        aria-controls={`panel-${i}`}
+        id={`q-${i}`}
+      >
+        <span>{item.question}</span>
+        <svg
+          class="h-5 w-5 shrink-0 text-secondary transition-transform duration-300"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      </button>
+      <div
+        id={`panel-${i}`}
+        role="region"
+        aria-labelledby={`q-${i}`}
+        class="grid grid-rows-[0fr] transition-[grid-template-rows] duration-300"
+      >
+        <div class="min-h-0 overflow-hidden">
+          <p class="pb-5 text-base leading-relaxed text-text/75">{item.answer}</p>
+        </div>
+      </div>
+    </div>
+  ))}
+</div>
+
+<script>
+  document.querySelectorAll('[data-accordion]').forEach((accordion) => {
+    const allowMultiple = accordion.hasAttribute('data-allow-multiple');
+    const buttons = accordion.querySelectorAll('button[aria-expanded]');
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const isExpanded = btn.getAttribute('aria-expanded') === 'true';
+        const panel = btn.nextElementSibling as HTMLElement;
+        const chevron = btn.querySelector('svg');
+
+        if (!isExpanded) {
+          if (!allowMultiple) {
+            accordion.querySelectorAll('button[aria-expanded="true"]').forEach((other) => {
+              other.setAttribute('aria-expanded', 'false');
+              const otherPanel = other.nextElementSibling as HTMLElement;
+              otherPanel.style.gridTemplateRows = '0fr';
+              const otherChevron = other.querySelector('svg');
+              if (otherChevron) otherChevron.style.transform = '';
+            });
+          }
+
+          btn.setAttribute('aria-expanded', 'true');
+          panel.style.gridTemplateRows = '1fr';
+          if (chevron) chevron.style.transform = 'rotate(180deg)';
+        } else {
+          btn.setAttribute('aria-expanded', 'false');
+          panel.style.gridTemplateRows = '0fr';
+          if (chevron) chevron.style.transform = '';
+        }
+      });
+    });
+  });
+</script>

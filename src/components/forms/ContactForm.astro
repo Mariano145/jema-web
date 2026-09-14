@@ -1,0 +1,190 @@
+---
+import SubmitButton from '../ui/SubmitButton.astro';
+import { ctas } from '../../config/ctas';
+---
+
+<form id="contact-form" novalidate class="flex flex-col gap-4">
+  <div>
+    <label for="nombre" class="mb-1 block text-sm font-medium text-text">Nombre</label>
+    <input
+      type="text"
+      id="nombre"
+      name="nombre"
+      required
+      class="w-full rounded-lg border border-text/20 bg-white px-4 py-3 text-text placeholder-text/40 transition-colors focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+      aria-describedby="nombre-error"
+      placeholder="Tu nombre"
+    />
+    <p id="nombre-error" class="mt-1 hidden text-sm text-red-600" role="alert"></p>
+  </div>
+
+  <div>
+    <label for="empresa" class="mb-1 block text-sm font-medium text-text">Empresa</label>
+    <input
+      type="text"
+      id="empresa"
+      name="empresa"
+      class="w-full rounded-lg border border-text/20 bg-white px-4 py-3 text-text placeholder-text/40 transition-colors focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+      aria-describedby="empresa-error"
+      placeholder="Nombre de tu empresa"
+    />
+    <p id="empresa-error" class="mt-1 hidden text-sm text-red-600" role="alert"></p>
+  </div>
+
+  <div>
+    <label for="email" class="mb-1 block text-sm font-medium text-text">Email</label>
+    <input
+      type="email"
+      id="email"
+      name="email"
+      required
+      class="w-full rounded-lg border border-text/20 bg-white px-4 py-3 text-text placeholder-text/40 transition-colors focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+      aria-describedby="email-error"
+      placeholder="tu@email.com"
+    />
+    <p id="email-error" class="mt-1 hidden text-sm text-red-600" role="alert"></p>
+  </div>
+
+  <div>
+    <label for="tema" class="mb-1 block text-sm font-medium text-text">Tema</label>
+    <select
+      id="tema"
+      name="tema"
+      class="w-full rounded-lg border border-text/20 bg-white px-4 py-3 text-text transition-colors focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+    >
+      <option value="">Elegí un tema (opcional)</option>
+      <option value="presenciaDigital">Presencia Digital</option>
+      <option value="automatizacion">Automatización</option>
+      <option value="softwareMedida">Software a Medida</option>
+      <option value="otro">Otro</option>
+    </select>
+  </div>
+
+  <div>
+    <label for="mensaje" class="mb-1 block text-sm font-medium text-text">Mensaje</label>
+    <textarea
+      id="mensaje"
+      name="mensaje"
+      rows="4"
+      required
+      class="w-full rounded-lg border border-text/20 bg-white px-4 py-3 text-text placeholder-text/40 transition-colors focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+      aria-describedby="mensaje-error"
+      placeholder="Contanos sobre tu negocio y proyecto"
+    ></textarea>
+    <p id="mensaje-error" class="mt-1 hidden text-sm text-red-600" role="alert"></p>
+  </div>
+
+  <div id="form-error" class="hidden text-sm text-red-600" role="alert"></div>
+
+  <SubmitButton variant="primary">Enviar mensaje</SubmitButton>
+</form>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const submitBtn = form?.querySelector<HTMLButtonElement>('[data-submit-btn]');
+  const submitDefaultText = submitBtn?.textContent?.trim() ?? 'Enviar mensaje';
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  function showError(fieldId: string, message: string) {
+    const errorEl = document.getElementById(`${fieldId}-error`);
+    if (errorEl) {
+      errorEl.textContent = message;
+      errorEl.classList.remove('hidden');
+    }
+  }
+
+  function clearError(fieldId: string) {
+    const errorEl = document.getElementById(`${fieldId}-error`);
+    if (errorEl) {
+      errorEl.textContent = '';
+      errorEl.classList.add('hidden');
+    }
+  }
+
+  function clearAllErrors() {
+    ['nombre', 'empresa', 'email', 'mensaje'].forEach(clearError);
+    const formError = document.getElementById('form-error');
+    if (formError) {
+      formError.textContent = '';
+      formError.classList.add('hidden');
+    }
+  }
+
+  function resetSubmit() {
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = submitDefaultText;
+    }
+  }
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    clearAllErrors();
+
+    const nombre = (form.querySelector('#nombre') as HTMLInputElement).value.trim();
+    const empresa = (form.querySelector('#empresa') as HTMLInputElement).value.trim();
+    const email = (form.querySelector('#email') as HTMLInputElement).value.trim();
+    const tema = (form.querySelector('#tema') as HTMLSelectElement).value;
+    const mensaje = (form.querySelector('#mensaje') as HTMLTextAreaElement).value.trim();
+    let valid = true;
+
+    if (!nombre) {
+      showError('nombre', 'El nombre es obligatorio.');
+      valid = false;
+    }
+    if (!email) {
+      showError('email', 'El email es obligatorio.');
+      valid = false;
+    } else if (!emailRegex.test(email)) {
+      showError('email', 'Ingresá un email válido.');
+      valid = false;
+    }
+    if (!mensaje) {
+      showError('mensaje', 'El mensaje es obligatorio.');
+      valid = false;
+    }
+
+    if (!valid) return;
+
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Enviando...';
+    }
+
+    try {
+      const response = await fetch(ctas.formEndpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nombre, empresa, email, tema, mensaje }),
+      });
+
+      if (response.ok) {
+        form.outerHTML = `
+          <div class="rounded-lg border border-primary/30 bg-primary/5 p-6 text-center">
+            <p class="text-lg font-medium text-text">Listo. Te respondemos en menos de 24h hábiles.</p>
+            <p class="mt-2 text-sm text-text/70">
+              Mientras tanto, podés ver más en
+              <a href="#servicios" class="text-primary underline-offset-2 hover:underline">Servicios</a>
+              o
+              <a href="#como-trabajamos" class="text-primary underline-offset-2 hover:underline">Cómo trabajamos</a>.
+            </p>
+          </div>
+        `;
+      } else {
+        const formError = document.getElementById('form-error');
+        if (formError) {
+          formError.textContent = 'No pudimos enviar el mensaje. Intentá de nuevo o escribinos por WhatsApp.';
+          formError.classList.remove('hidden');
+        }
+        resetSubmit();
+      }
+    } catch {
+      const formError = document.getElementById('form-error');
+      if (formError) {
+        formError.textContent = 'No pudimos enviar el mensaje. Revisá tu conexión o escribinos por WhatsApp.';
+        formError.classList.remove('hidden');
+      }
+      resetSubmit();
+    }
+  });
+</script>
